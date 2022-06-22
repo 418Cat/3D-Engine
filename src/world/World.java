@@ -55,6 +55,11 @@ public class World {
 			objects.add(cam);
 		}
 		
+		public void removeObjElement(int index) {
+			if(objects.size()-1 < index || index < 0) return;
+			objects.remove(index);
+		}
+		
 		public void addPlane(int[][] points, Color color) {
 			shapes.add(new Plane(points, color));
 		}

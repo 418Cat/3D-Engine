@@ -15,11 +15,16 @@ public class UserCamera extends Obj {
 		
 		size[0] = 2*(int)Math.tan(Math.toRadians(fov/2));
 		size[1] = (int)(size[0]/aspectRatio);
-		System.out.println("camera : " + size[0] + ", " + size[1] + "; fov = " + fov + "; rads = " + Math.toRadians(fov) + "; tan = " + 2*Math.tan(Math.toRadians(fov/2)));
 	}
 	
 	public int[] coords() {
 		return(xyz);
+	}
+	
+	public void move(int x, int y, int z) {
+		xyz[0]+=x;
+		xyz[1]+=y;
+		xyz[2]+=z;
 	}
 
 }

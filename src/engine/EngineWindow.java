@@ -1,7 +1,10 @@
 package engine;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -21,6 +24,7 @@ public class EngineWindow {
 		engineFrame = new Frame(size, location, fullscreen);
 		engineFrame.show();
 		g = engineFrame.frame.getGraphics();
+		engineFrame.listen();
 	
 	}
 	
@@ -37,13 +41,11 @@ public class EngineWindow {
 			
 			points2dY[i] = (engineFrame.frame.getContentPane().getHeight()/2)+(int)(((float)cam.size[1]/2)-(cam.coords()[1]-shape.pointCoords[i][1])
 					* ((float)1/(cam.coords()[0]-shape.pointCoords[i][0])));
-			System.out.println("point " + i + " : " + points2dX[i] + ", " + points2dY[i]);
+			System.out.println("point " + i + " : " +  points2dX[i] + ", " + points2dY[i]);
 		}
 		
 		g.setColor(shape.color);
 		g.fillPolygon(points2dX, points2dY, points2dX.length);
-		//g.fillRect(points2dX[1], points2dY[1], 50, 50);
-		 
 		
 	}
 	

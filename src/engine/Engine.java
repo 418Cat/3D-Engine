@@ -18,6 +18,10 @@ public class Engine {
 		this.world = world;
 		this.cam = world.getCam();
 	}
+	
+	public void clear() {
+		ew.g.clearRect(0, 0, ew.engineFrame.frame.getWidth(), ew.engineFrame.frame.getHeight());
+	}
 
 	public void render() {
 		for(Shape shape : world.content.shapes) {

@@ -1,20 +1,21 @@
 package main;
 
 import java.awt.Color;
+import java.util.Date;
 
 import engine.Engine;
 import world.World;
 
 public class Main {
+	
+	public static World world;
+	public static Engine engine;
 
 	public static void main(String[] args) {
 		
-		World world = new World(new int[] {500, 500, 500}, Color.black, new int[] {600, 600}, 90);
+		world = new World(new int[] {500, 500, 500}, Color.black, new int[] {600, 600}, 70);
 		
-		@SuppressWarnings("unused")
-		Engine engine = new Engine(new int[] {1920, 1080}, new int[] {0, 0}, false, world);
-		
-		world.content.addPlane(new int[][] {{-1, -35, 0}, {-900, -50, 0}, {0, -20, -30}}, Color.red);
+		engine = new Engine(new int[] {1920, 1080}, new int[] {0, 0}, false, world);
 		
 		try {
 			Thread.sleep(500);
@@ -22,7 +23,27 @@ public class Main {
 			// TODO: handle exception
 		}
 		
-		engine.render();
+		int interval = 50;
+		
+		
+		int[][] planeCoords = {{20, -9000, 0}, {20, 0, 9000}, {20, 9000, 0}, {20, 0, -9000}};
+		world.content.addPlane(planeCoords, Color.red);
+		
+		double sin = (Math.sin((float)new Date().getTime()*1));
+		
+		while(true) {
+			
+			if(Math.floorMod(new Date().getTime(), interval) == 0) {
+				sin = Math.sin(new Date().getTime()*1);
+				world.content.removeObjElement(0);
+				engine.clear();
+				planeCoords[1][2] = (int)(sin*9000);
+				planeCoords[3][2] = (int)(-sin*9000);
+				world.content.addPlane(planeCoords, Color.red);
+				engine.render();
+				
+			}
+		}
 		
 	}
 
