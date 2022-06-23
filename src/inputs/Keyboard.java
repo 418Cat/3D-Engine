@@ -8,6 +8,7 @@ import main.Main;
 public class Keyboard implements KeyListener{
 	
 	private int movement = 3;
+	
 
 	@Override
 	public void keyTyped(KeyEvent e) {

@@ -3,9 +3,9 @@ package world;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import world.objects.Shape;
 import world.objects.UserCamera;
 import world.objects.Shapes.Plane;
-import world.objects.Shapes.Shape;
 
 public class World {
 	

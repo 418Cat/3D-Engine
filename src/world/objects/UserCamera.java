@@ -7,7 +7,7 @@ public class UserCamera extends Obj {
 	public int[] size = new int[2];
 	public int fov;
 	public float aspectRatio;
-	
+	public int[] angle = {0, 0};
 	private int[] xyz = {0, 0, 0};
 	
 	public UserCamera(int[] frameSize, int fov){
@@ -25,6 +25,16 @@ public class UserCamera extends Obj {
 		xyz[0]+=x;
 		xyz[1]+=y;
 		xyz[2]+=z;
+	}
+	
+	public void turn(int x, int y) {
+		angle[0]+=x;
+		angle[1]+=y;
+	}
+	
+	public void turn(int[] angle) {
+		angle[0]+=angle[0];
+		angle[1]+=angle[1];
 	}
 
 }

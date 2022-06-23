@@ -3,13 +3,13 @@ package engine;
 import java.awt.image.BufferedImage;
 
 import world.World;
+import world.objects.Shape;
 import world.objects.UserCamera;
-import world.objects.Shapes.Shape;
 
 public class Engine {
 	
 	UserCamera cam;
-	EngineWindow ew;
+	public EngineWindow ew;
 	World world;
 	BufferedImage nextFrame;
 	
