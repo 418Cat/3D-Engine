@@ -1,30 +1,29 @@
 package world.objects;
 
+import engine.math.Point3D;
 import world.Obj;
 
 public class UserCamera extends Obj {
 	
-	public int[] size = new int[2];
 	public int fov;
 	public float aspectRatio;
 	public int[] angle = {0, 0};
-	private int[] xyz = {0, 0, 0};
+	private Point3D point;
 	
 	public UserCamera(int[] frameSize, int fov){
+		point = new Point3D(0, 0, 0);
 		aspectRatio = frameSize[0]/frameSize[1];
-		
-		size[0] = 2*(int)Math.tan(Math.toRadians(fov/2));
-		size[1] = (int)(size[0]/aspectRatio);
+		this.fov = fov;
 	}
 	
 	public int[] coords() {
-		return(xyz);
+		return(point.coords);
 	}
 	
 	public void move(int x, int y, int z) {
-		xyz[0]+=x;
-		xyz[1]+=y;
-		xyz[2]+=z;
+		point.coords[0]+=x;
+		point.coords[1]+=y;
+		point.coords[2]+=z;
 	}
 	
 	public void turn(int x, int y) {
@@ -35,6 +34,10 @@ public class UserCamera extends Obj {
 	public void turn(int[] angle) {
 		angle[0]+=angle[0];
 		angle[1]+=angle[1];
+	}
+	
+	public Point3D point() {
+		return(point);
 	}
 
 }

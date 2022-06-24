@@ -3,6 +3,7 @@ package world;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import engine.math.Point3D;
 import world.objects.Shape;
 import world.objects.UserCamera;
 import world.objects.Shapes.Plane;
@@ -60,7 +61,7 @@ public class World {
 			objects.remove(index);
 		}
 		
-		public void addPlane(int[][] points, Color color) {
+		public void addPlane(Point3D[] points, Color color) {
 			shapes.add(new Plane(points, color));
 		}
 	}

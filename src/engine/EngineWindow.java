@@ -1,7 +1,11 @@
 package engine;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -10,6 +14,7 @@ import inputs.Keyboard;
 import inputs.Mouse;
 import world.objects.Shape;
 import world.objects.UserCamera;
+import engine.math.*;
 
 public class EngineWindow {
 	
@@ -33,29 +38,43 @@ public class EngineWindow {
 	}
 	
 	protected void drawShape(Engine eng, Shape shape) {
-		int[] points2dX = new int[shape.pointCoords.length];
-		int[] points2dY = new int[shape.pointCoords.length];
+		int[] points2dX = new int[shape.points.length];
+		int[] points2dY = new int[shape.points.length];
 		
 		UserCamera cam = eng.cam;
 		
-		for(int i = 0; i < shape.pointCoords.length; i++) {
+		for(int i = 0; i < shape.points.length; i++) {
 			
-			/*points2dX[i] = (engineFrame.frame.getContentPane().getWidth()/2)+(int)(((float)cam.size[0]/2)-(cam.coords()[2]-shape.pointCoords[i][2]) 
-					* ((float)1/(cam.coords()[0]-shape.pointCoords[i][0])));
+			int x = (int)(cam.coords()[0] + Math.cos(Math.toRadians(cam.fov/2 + cam.angle[0]))*10);
+			int z = (int)(cam.coords()[1] + Math.sin(Math.toRadians(cam.fov/2 + cam.angle[0]))*10);
 			
-			points2dY[i] = (engineFrame.frame.getContentPane().getHeight()/2)+(int)(((float)cam.size[1]/2)-(cam.coords()[1]-shape.pointCoords[i][1])
-					* ((float)1/(cam.coords()[0]-shape.pointCoords[i][0])));*/
-			//points2DX[i] = 
-			//System.out.println("point " + i + " : " +  points2dX[i] + ", " + points2dY[i]);
+			//System.out.println(x + ", 0, " + z);
+			
+			Vector3D vectTmp = new Vector3D(cam.point(), new Point3D(x, cam.point().y(), z));
+			Vector3D camToPoint = new Vector3D(cam.point(), new Point3D(shape.points[0].x(), cam.point().y(), shape.points[0].z()));
+			
+			points2dX[i] = (camToPoint.angleDeg(vectTmp)/cam.fov)*engineFrame.frame.getWidth();
+			System.out.println("camToPoint = " + camToPoint.x() + ", " + camToPoint.y() + ", " + camToPoint.z());
+			System.out.println("vectTmp = " + vectTmp.x() + ", " + vectTmp.y() + ", " + vectTmp.z());
+			System.out.println("angle = " + camToPoint.angleDeg(vectTmp));
+			
+			
+			x = (int)(cam.coords()[0] + Math.cos(Math.toRadians(cam.aspectRatio*cam.fov/2 + cam.angle[1]))*100);
+			int y = (int)(cam.coords()[1] + Math.sin(Math.toRadians(cam.aspectRatio*cam.fov/2 + cam.angle[1]))*100);
+			
+			vectTmp = new Vector3D(cam.point(), new Point3D(x, y, cam.point().z()));
+			camToPoint = new Vector3D(cam.point(), new Point3D(shape.points[0].x(), shape.points[0].y(), cam.point().z()));
+			
+			points2dY[i] = (int) ((camToPoint.angleDeg(vectTmp)/(cam.fov*cam.aspectRatio))*engineFrame.frame.getHeight());
+			
+			//System.out.println("point = " + points2dX[i] + ", " + points2dY[i]);
+			
+			
 		}
 		
 		g.setColor(shape.color);
 		g.fillPolygon(points2dX, points2dY, points2dX.length);
 		
-	}
-	
-	private int distancebetweenPoints(int[] point1, int[] point2) {
-		return((int)Math.sqrt(Math.pow((point1[0] - point2[0]), 2) + Math.pow((point1[1] - point2[1]), 2) + Math.pow((point1[2] - point2[2]), 2)));
 	}
 	
 }
@@ -76,6 +95,17 @@ class Frame {
 		frame.getContentPane().setPreferredSize(paneSize);
 		frame.setLocation(location[0], location[1]);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		
+		// Transparent 16 x 16 pixel cursor image.
+		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+
+		// Create a new blank cursor.
+		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+		    cursorImg, new Point(0, 0), "blank cursor");
+
+		// Set the blank cursor to the JFrame.
+		frame.getContentPane().setCursor(blankCursor);
+		
 	}
 	
 	protected void listen() {
