@@ -16,58 +16,57 @@ import world.objects.Shape;
 import world.objects.UserCamera;
 import engine.math.*;
 
+/**
+ * a window to show rendered frames from an {@link engine.Engine} instance
+ * @author 418cat
+ *
+ */
 public class EngineWindow {
 	
 	Frame engineFrame;
 	Graphics g;
 	
+	
+	/**
+	 * @param size : size of the jframe in px
+	 * @param location : location of the jframe on screen in px
+	 * @param fullscreen : set to fullscreen
+	 */
 	protected EngineWindow(int[] size, int[] location, boolean fullscreen){
 		
 		engineFrame = new Frame(size, location, fullscreen);
 	
 	}
 	
+	
+	/**
+	 * show the engine window and start listening to listen & mouse events
+	 */
 	public void start() {
 		engineFrame.show();
 		g = engineFrame.frame.getGraphics();
 		engineFrame.listen();
 	}
 	
+	/**
+	 * track the mouse movement
+	 * @param middleCoords : coordinates of the window's middle
+	 * @return relativeCoords : coordinates relative to the middle of the window
+	 */
 	public int[] trackMouse(int[] middleCoords) {
 		return(engineFrame.mouse.trackMouse(middleCoords));
 	}
 	
+	/**
+	 * a hell that i need to work on
+	 * @param eng : engine to draw on
+	 * @param shape : shape to draw
+	 */
 	protected void drawShape(Engine eng, Shape shape) {
 		int[] points2dX = new int[shape.points.length];
 		int[] points2dY = new int[shape.points.length];
 		
-		UserCamera cam = eng.cam;
-		
 		for(int i = 0; i < shape.points.length; i++) {
-			
-			int x = (int)(cam.coords()[0] + Math.cos(Math.toRadians(cam.fov/2 + cam.angle[0]))*10);
-			int z = (int)(cam.coords()[1] + Math.sin(Math.toRadians(cam.fov/2 + cam.angle[0]))*10);
-			
-			//System.out.println(x + ", 0, " + z);
-			
-			Vector3D vectTmp = new Vector3D(cam.point(), new Point3D(x, cam.point().y(), z));
-			Vector3D camToPoint = new Vector3D(cam.point(), new Point3D(shape.points[0].x(), cam.point().y(), shape.points[0].z()));
-			
-			points2dX[i] = (camToPoint.angleDeg(vectTmp)/cam.fov)*engineFrame.frame.getWidth();
-			System.out.println("camToPoint = " + camToPoint.x() + ", " + camToPoint.y() + ", " + camToPoint.z());
-			System.out.println("vectTmp = " + vectTmp.x() + ", " + vectTmp.y() + ", " + vectTmp.z());
-			System.out.println("angle = " + camToPoint.angleDeg(vectTmp));
-			
-			
-			x = (int)(cam.coords()[0] + Math.cos(Math.toRadians(cam.aspectRatio*cam.fov/2 + cam.angle[1]))*100);
-			int y = (int)(cam.coords()[1] + Math.sin(Math.toRadians(cam.aspectRatio*cam.fov/2 + cam.angle[1]))*100);
-			
-			vectTmp = new Vector3D(cam.point(), new Point3D(x, y, cam.point().z()));
-			camToPoint = new Vector3D(cam.point(), new Point3D(shape.points[0].x(), shape.points[0].y(), cam.point().z()));
-			
-			points2dY[i] = (int) ((camToPoint.angleDeg(vectTmp)/(cam.fov*cam.aspectRatio))*engineFrame.frame.getHeight());
-			
-			//System.out.println("point = " + points2dX[i] + ", " + points2dY[i]);
 			
 			
 		}
@@ -79,11 +78,23 @@ public class EngineWindow {
 	
 }
 
+
+/**
+ * a private class used by {@link EngineWindow} to separate a bit the jframe code and the rendering code
+ * @author 418cat
+ *
+ */
 class Frame {
 	
 	protected JFrame frame;
 	protected Mouse mouse;
 	
+	/**
+	 * create a new Frame instance
+	 * @param size : size of the frame on screen in px
+	 * @param location : location of the frame on screen in px
+	 * @param fullscreen : set to fullscreen
+	 */
 	Frame(int[] size, int[] location, boolean fullscreen){
 		
 		Dimension paneSize = new Dimension();
@@ -108,12 +119,18 @@ class Frame {
 		
 	}
 	
+	/**
+	 * start listening to mouse & keyboard events
+	 */
 	protected void listen() {
 		frame.addKeyListener(new Keyboard());
 		mouse = new Mouse();
 		frame.addMouseListener(mouse);
 	}
 	
+	/**
+	 * set the frame visible
+	 */
 	protected void show() {
 		frame.setVisible(true);
 	}

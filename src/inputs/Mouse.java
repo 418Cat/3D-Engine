@@ -41,7 +41,7 @@ public class Mouse implements MouseListener {
 	}
 	
 	public int[] trackMouse(int[] middleCoords) {
-		int[] newCoords = {MouseInfo.getPointerInfo().getLocation().x - mouse[0], MouseInfo.getPointerInfo().getLocation().y - mouse[1]};
+		int[] relativeCoords = {MouseInfo.getPointerInfo().getLocation().x - mouse[0], MouseInfo.getPointerInfo().getLocation().y - mouse[1]};
 		mouse[0] = MouseInfo.getPointerInfo().getLocation().x;
 		mouse[1] = MouseInfo.getPointerInfo().getLocation().y;
 		
@@ -52,7 +52,7 @@ public class Mouse implements MouseListener {
 			System.err.println(error.toString());
 		}
 		
-		return(newCoords);
+		return(relativeCoords);
 	}
 
 }
